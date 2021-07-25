@@ -1,0 +1,1 @@
+# These are my initial regex functions for Natural Language Processing

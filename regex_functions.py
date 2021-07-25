@@ -95,3 +95,78 @@ def convert_date_format(target):
     df['converted_date'] = pd.to_datetime(df['converted_date'])
     
     return df
+
+def extract_lines(target):
+    '''
+    This function takes in a string of logfiles. It creates an empty pandas DataFrame. 
+    Creates an 'input_line' column that splits the original string by line, and returns the original input.
+    Finally, it extracts the following sections of the original line, and returns a new column for each:
+    - method
+    - path
+    - timestamp
+    - status
+    - bytes_sent
+    - user_agent
+    - ip
+    '''
+    
+    # (?P<method>[A-Z]+) = begins with 1 or more cap letters, stored as 'method'
+    # \s = separated by whitespace
+    # (?P<path>.*) = 'path' could be any character(s) of any length
+    # \s = separated by whitespace
+    # HTTP/1.1 = literall HTTP/1.1
+    # \s = separated by whitespace
+    # {(?P<status>\d+)} = 'status' of 1 or more non-digit characters
+    # \s = separated by whitespace
+    # (?P<bytes_sent>\d+) = 'bytes_sent' of 1 or more digit characters
+    # \s = separated by whitespace
+    # "(?P<user_agent>.*)" = 'user_agent' inside "" of any character(s) zero or more times
+    # \s = separated by whitespace 1 or more times
+    # (?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) = 'ip' of 1 to 3 digits, '.' 4x
+
+
+    
+    regexp = r'''
+(?P<method>[A-Z]+)
+\s
+(?P<path>.*)
+\s
+\[(?P<timestamp>.*)\]
+\s
+HTTP/1.1
+\s
+{(?P<status>\d+)}
+\s
+(?P<bytes_sent>\d+)
+\s
+"(?P<user_agent>.*)"
+\s+
+(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
+'''
+    # compiles the VERBOSE regexp
+    regexp = re.compile(regexp, re.VERBOSE)
+    
+    # creates empty pandas DataFrame
+    df = pd.DataFrame()
+    
+    # creates 'input_line' column of original data
+    df['input_line'] = lines.strip().split('\n')
+    
+    # concatenates 'input_line' and the extracted regexp data
+    df = pd.concat([df, df['input_line'].str.extract(regexp)], axis=1)
+    
+    return df
+
+def get_words():
+    '''
+    This function looks for a locally stored list of words. It read them in, drops nulls, 
+    and converts all characters to lowercase. Returns a pandas Series.
+    '''
+    # reads in the locally stored list of words, and drops null values
+    words = pd.read_csv('/usr/share/dict/words', header=None, squeeze=True).dropna()
+    
+    # converts all characters to lowercase
+    words = words.str.lower()
+    
+    return words
+

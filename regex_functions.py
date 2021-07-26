@@ -113,13 +113,14 @@ def extract_lines(target):
     # \s = separated by whitespace
     # (?P<path>.*) = 'path' could be any character(s) of any length
     # \s = separated by whitespace
+    # [(?P<timestamp>.*)\] = 'timestamp' beginning/ending with literal [] with zero or more of any character type
     # HTTP/1.1 = literall HTTP/1.1
     # \s = separated by whitespace
-    # {(?P<status>\d+)} = 'status' of 1 or more non-digit characters
+    # {(?P<status>\d+)} = 'status' of 1 or more non-digit characters, beginning and ending with {}
     # \s = separated by whitespace
     # (?P<bytes_sent>\d+) = 'bytes_sent' of 1 or more digit characters
     # \s = separated by whitespace
-    # "(?P<user_agent>.*)" = 'user_agent' inside "" of any character(s) zero or more times
+    # "(?P<user_agent>.*)" = 'user_agent' inside "" of any character(s) zero or more times, beginning and ending with ""
     # \s = separated by whitespace 1 or more times
     # (?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) = 'ip' of 1 to 3 digits, '.' 4x
 

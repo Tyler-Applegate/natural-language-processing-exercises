@@ -6,8 +6,7 @@ import re
 
 def is_vowel(subject):
     '''
-    This function will take in a string and look for an exact match for a single character vowel. 
-    It will return a boolean value.
+    This function will take in a string and look for an exact match for a single character vowel. It will return a boolean value.
     '''
     
     # startswith an upper or lowercase vowel, and is only 1 character
@@ -170,3 +169,32 @@ def get_words():
     
     return words
 
+def more_vowels(target_list):
+    '''
+    This function takes in a pandas Series in an attempt to determine if each string has more vowels.
+    First, we create an empty pandas DataFrame. Then an 'input_data' column that contains the target_list.
+    A 'vowel_count' column is created that has a sum of each strings vowel count.
+    A 'cons_count' column is created that has a sum of each strings consonant count.
+    A 'mas_vowels' column is created that holds a boolean value of whether or not the string has more vowels than consonants.
+    Finally, an update pandas DataFrame, along with a total count are returned.
+    '''
+    
+    # make an empty DataFrame
+    df = pd.DataFrame()
+    
+    # create input data column
+    df['input_data'] = words
+    
+    # create vowel count column
+    df['vowel_count'] = words.str.count(r'[aeiou]')
+    
+    # create consonant count column
+    df['cons_count'] = words.str.count(r'[^aeiou]')
+    
+    # create a more vowels column
+    df['mas_vowels'] = df['vowel_count'] > df['cons_count']
+    
+    # assign a variable to the sum of strings with more vowels than consonants
+    target_count = df['mas_vowels'].sum()
+    
+    return df, target_count

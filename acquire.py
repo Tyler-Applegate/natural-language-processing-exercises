@@ -51,7 +51,9 @@ def get_blog_articles(url_list):
         # append each dictionary
         list_of_blogs.append(get_title_content(url))
         
-    return list_of_blogs
+        df = pd.DataFrame(list_of_blogs)
+        
+    return df
 
 ########################### For a Single Article ###########################
 

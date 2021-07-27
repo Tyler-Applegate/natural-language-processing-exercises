@@ -4,7 +4,11 @@
 from requests import get
 from bs4 import BeautifulSoup
 import os
-
+import unicodedata
+import re
+import nltk
+from nltk.tokenize.toktok import ToktokTokenizer
+from nltk.corpus import stopwords
 
 def basic_clean(string):
     '''

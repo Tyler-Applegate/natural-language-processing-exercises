@@ -5,6 +5,7 @@ import requests
 from requests import get
 from bs4 import BeautifulSoup
 import os
+import pandas as pd
 
 ################ Fancy Functions to Blog About ##################################
 
@@ -22,7 +23,7 @@ def get_title_content(url):
     response = get(url, headers=headers)
     
     # make that delicious Campbells (return the text)
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, features="lxml")
     
     # give me the entire content as text
     content = soup.find('div', class_='jupiterx-post-content')
@@ -93,7 +94,7 @@ def get_articles(category, base ="https://inshorts.com/en/read/"):
     response = get(url, headers=headers)
 
     # Make soup out of the raw html
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, features="lxml")
     
     # Ignore everything, focusing only on the news cards
     articles = soup.select(".news-card")

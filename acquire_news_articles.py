@@ -2,7 +2,6 @@
 # News Articles
 
 # imports
-import requests
 from requests import get
 from bs4 import BeautifulSoup
 import os
